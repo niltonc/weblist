@@ -1,66 +1,18 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList, } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList } from 'react-native';
 import { MaterialCommunityIcons, Feather  } from '@expo/vector-icons';
 
-
-const DATA = [
-    {
-      id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-      title: 'First Item',
-    },
-    {
-      id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-      title: 'Second Item',
-    },
-    {
-      id: '58694a0f-3da1-471f-bd96-145571e29d72',
-      title: 'Third Item',
-    },
-    
-  ];
-
-  const Item = ({ title }) => (
-    <View style={styles.list}>
-
-        <TouchableOpacity onPress={() => selectItem()}
-        >
-        <Feather name="square" size={20} color="blue" />
-				</TouchableOpacity>
-
-                <Text style={[styles.textItem
-                ]}> 
-                {title}
-                </Text>
-
-                <TouchableOpacity onPressOut={() => editItem()} style={{margin:5}}>
-				<Feather name="edit" size={20} color="blue" />
-			</TouchableOpacity>
-
-            <TouchableOpacity onPressOut={() => deleteItem() } style={{margin:5}}>
-            <Feather name="trash" size={20} color="red" />
-			</TouchableOpacity>
-
-    </View>
-  );
 
   const selectItem = () => {
       console.log('item selecionado')
   }
-
-  const deleteItem = () => {
-    console.log('item Deletado')
-}
-
-const editItem = () => {
-    console.log('Iditar Item')
-}
-
 
 export default function Home({ navigation }) {
   
     const [input, setInput] = useState();
     const [allItems,setAllItems] = useState([]);
 
+    /* ADICIONAR OS ELEMENTOS */
     const addElement = () => {
         const timestamp = new Date().getDate();
         var newArray = [...allItems , { id : timestamp, title: input }];
@@ -68,10 +20,13 @@ export default function Home({ navigation }) {
         setAllItems(newArray);
       }
 
-        /* RENDER DO ITEM*/ 
-    const renderItem = ({ item }) => (
-        <Item title={item.title} />
-      );   
+    /* DELETAR ELEMENTO */
+    const deleteElement = (element) => {
+        const newArray = allItems.filter(function (item) {
+          return item != element;
+        })
+        setAllItems(newArray);
+      }
 
     return (
         <View style={styles.container}>
@@ -86,7 +41,7 @@ export default function Home({ navigation }) {
                     </View>
                     
                     <View style={styles.itemCounter}>
-                            <Text style={styles.textTitle}>5/{allItems.length}</Text>
+                            <Text style={styles.textTitle}>0/{allItems.length}</Text>
                     </View>
                 </View>
 
@@ -95,8 +50,26 @@ export default function Home({ navigation }) {
                 <ScrollView> 
 
                 <FlatList
-        data={allItems}
-        renderItem={renderItem}
+                data={allItems}
+                renderItem={({item})=>( 
+             <View style={styles.list}>
+            <TouchableOpacity onPress={() => selectItem()}>
+            <Feather name="square" size={20} color="blue" />
+                    </TouchableOpacity>
+    
+                    <Text style={[styles.textItem ]}> 
+                    {item.title}
+                    </Text>
+    
+                    <TouchableOpacity onPressOut={() => editItem()} style={{margin:5}}>
+                    <Feather name="edit" size={20} color="blue" />
+                </TouchableOpacity>
+    
+                <TouchableOpacity onPressOut={() => deleteElement(item) } style={{margin:5}}>
+                <Feather name="trash" size={20} color="red" />
+                </TouchableOpacity>
+        </View>
+        )}
         keyExtractor={item => item.timestamp}
       />
           
@@ -120,7 +93,10 @@ export default function Home({ navigation }) {
                     {/* View button */}
                     <View style={styles.buttonContainer}>
                         <TouchableOpacity style={styles.button} onPress={()=>addElement()}>
-                            <MaterialCommunityIcons name="plus" size={24} color="black" />
+                            <MaterialCommunityIcons 
+                            name="plus" 
+                            size={24} 
+                            color="black" />
                         </TouchableOpacity>
                     </View>
                 </View>
@@ -179,7 +155,7 @@ const styles = StyleSheet.create({
      alignItems: 'center',
     justifyContent:'center',
     backgroundColor:'#FFFFFF',
-    borderRadius:15,
+    borderRadius:10,
     width: '100%',
     marginBottom: 8,
     height: 45
