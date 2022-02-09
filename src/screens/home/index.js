@@ -1,9 +1,7 @@
-import React from 'react';
-import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList, AsyncStorage } from 'react-native';
+import React, { useState } from 'react';
+import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList, } from 'react-native';
 import { MaterialCommunityIcons, Feather  } from '@expo/vector-icons';
 
-
-import itemList from '../../components/item/index';
 
 const DATA = [
     {
@@ -18,33 +16,15 @@ const DATA = [
       id: '58694a0f-3da1-471f-bd96-145571e29d72',
       title: 'Third Item',
     },
-    {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
     
   ];
 
   const Item = ({ title }) => (
-    <View style={{
-        flexDirection: 'row',
-     alignItems: 'center',
-    justifyContent:'center',
-    backgroundColor:'#FFFFFF',
-    borderRadius:15,
-    width: '100%',
-    marginBottom: 8,
-    height: 70
-    }}>
+    <View style={styles.list}>
 
         <TouchableOpacity onPress={() => selectItem()}
-        style={{backgroundColor:'#1221'}}
         >
-        <Feather name="square" size={20} color="black" />
+        <Feather name="square" size={20} color="blue" />
 				</TouchableOpacity>
 
                 <Text style={[styles.textItem
@@ -52,11 +32,11 @@ const DATA = [
                 {title}
                 </Text>
 
-                <TouchableOpacity onPressOut={() => editItem()} style={{margin:2}}>
+                <TouchableOpacity onPressOut={() => editItem()} style={{margin:5}}>
 				<Feather name="edit" size={20} color="blue" />
 			</TouchableOpacity>
 
-            <TouchableOpacity onPressOut={() => deleteItem() } style={{margin:2}}>
+            <TouchableOpacity onPressOut={() => deleteItem() } style={{margin:5}}>
             <Feather name="trash" size={20} color="red" />
 			</TouchableOpacity>
 
@@ -72,15 +52,26 @@ const DATA = [
 }
 
 const editItem = () => {
-    console.log('item Deletado')
+    console.log('Iditar Item')
 }
 
 
 export default function Home({ navigation }) {
+  
+    const [input, setInput] = useState();
+    const [allItems,setAllItems] = useState([]);
 
+    const addElement = () => {
+        const timestamp = new Date().getDate();
+        var newArray = [...allItems , { id : timestamp, title: input }];
+        allItems.push({ id: timestamp, title: input });
+        setAllItems(newArray);
+      }
+
+        /* RENDER DO ITEM*/ 
     const renderItem = ({ item }) => (
         <Item title={item.title} />
-      );
+      );   
 
     return (
         <View style={styles.container}>
@@ -95,7 +86,7 @@ export default function Home({ navigation }) {
                     </View>
                     
                     <View style={styles.itemCounter}>
-                        <Text style={styles.textTitle}>1/2</Text>
+                            <Text style={styles.textTitle}>5/{allItems.length}</Text>
                     </View>
                 </View>
 
@@ -104,9 +95,9 @@ export default function Home({ navigation }) {
                 <ScrollView> 
 
                 <FlatList
-        data={DATA}
+        data={allItems}
         renderItem={renderItem}
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.timestamp}
       />
           
                 </ScrollView>
@@ -121,12 +112,14 @@ export default function Home({ navigation }) {
                         <TextInput placeholder="Novo item da lista..." 
                         numberOfLines={1}
                         style={styles.textInput}
+                        onChangeText={(text)=>setInput(text)}
+                        value={input}
                         />
                     </View>
 
                     {/* View button */}
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity style={styles.button}>
+                        <TouchableOpacity style={styles.button} onPress={()=>addElement()}>
                             <MaterialCommunityIcons name="plus" size={24} color="black" />
                         </TouchableOpacity>
                     </View>
@@ -174,21 +167,28 @@ const styles = StyleSheet.create({
         alignItems: 'center' 
     }, 
     flatlistContainer:{
-        backgroundColor: '#1224', 
+        backgroundColor: 'transparent', 
         width: '100%', 
         height: '60%', 
         alignItems: 'center',
         justifyContent:'space-between', 
         margin:10
     },
+    list:{
+        flexDirection: 'row',
+     alignItems: 'center',
+    justifyContent:'center',
+    backgroundColor:'#FFFFFF',
+    borderRadius:15,
+    width: '100%',
+    marginBottom: 8,
+    height: 45
+    },
+    
     insertItemContainer:{
         flexDirection: 'row', 
         backgroundColor: "#e85128", 
         borderRadius: 10,
-        height: 65,
-        justifyContent:'space-between',
-        flexWrap:'wrap',
-        alignItems:'center',
     },
     textInputContainer:{
         justifyContent:'center', 
@@ -216,11 +216,12 @@ const styles = StyleSheet.create({
         alignItems: 'center', 
         justifyContent: 'center', 
         borderRadius: 10,
+        elevation:6
     },
     textItem:{
         color: '#e85128',
 		fontSize: 18,
-        backgroundColor:'#1221',
+        backgroundColor:'transparent',
         width: 190,
         justifyContent:'center',
         margin: 8
