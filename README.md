@@ -17,7 +17,7 @@
 ### Requisitos Opcionais
 
 - [x] Splash screen
-- [ ] Persistir os itens da lista para que o usuário possa fechar o app sem perder os dados
+- [x] Persistir os itens da lista para que o usuário possa fechar o app sem perder os dados
 - [ ] Confirmar com o usuário se deseja realmente fechar o app
 - [ ] Permitir edição do nome do item da lista
 - [ ] Executar um som ao selecionar/remover seleção de um item da lista
