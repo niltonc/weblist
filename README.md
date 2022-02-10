@@ -22,6 +22,12 @@
 - [ ] Permitir edição do nome do item da lista
 - [ ] Executar um som ao selecionar/remover seleção de um item da lista
 
+### Adicionais 
+
+- [x] Logo
+- [x] Routes para futuras implementações
+- [x] Confirmação de espaço em branco no TextInput
+
 
 ## 🚀 Instalando WebList
 
