@@ -109,9 +109,7 @@ export default function Home({ navigation }) {
           </View>
 
           <View style={styles.itemCounter}>
-            <Text style={styles.textTitle}>
-              {Item.length}/{allItems.length}
-            </Text>
+            <Text style={styles.textTitle}>{allItems.length}</Text>
           </View>
         </View>
 
