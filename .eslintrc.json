@@ -1,23 +1,25 @@
 {
     "env": {
-      "es6": true
+        "es2021": true
     },
     "extends": [
-      "airbnb",
-      "prettier"
+        "plugin:react/recommended",
+        "airbnb",
+        "prettier"
     ],
-    "parser": "babel-eslint",
     "parserOptions": {
-      "ecmaFeatures": {
-        "jsx": true
-      },
-      "ecmaVersion": 2021,
-      "sourceType": "module"
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": "latest",
+        "sourceType": "module"
     },
     "plugins": [
       "prettier",
       "react",
-      "react-native"
+      "react-native",
+      "import",
+      "import-helpers"
     ],
     "rules": {
       "prettier/prettier": [
@@ -28,15 +30,50 @@
           "semi": true,
           "singleQuote": true,
           "tabWidth": 2,
-          "trailingComma": "es5",
-          "endOfLine": "auto"
+          "trailingComma": "es5"
         }
       ],
+      "import/no-extraneous-dependencies": "off",
+      "import-helpers/order-imports": [
+        "error",
+        {
+          "newlinesBetween": "always",
+          "groups": [
+            [
+              "/^react/",
+              "/^redux/"
+            ],
+            "/styled-components/",
+            "module",
+            "/prop-types/",
+            "/^~/pages/",
+            "/^~/components/",
+            [
+              "parent",
+              "sibling",
+              "index"
+            ],
+            "/routes/",
+            "/^~/",
+            "/styles/"
+          ],
+          "alphabetize": {
+            "order": "asc",
+            "ignoreCase": true
+          }
+        }
+      ],
+      "eqeqeq": "off",
+      "camelcase":"off",
+      "func-names": "off",
+      "no-console":"off",
+      "no-shadow":"off",
       "no-unused-vars": "off",
+      "no-underscore-dangle":"off",
       "no-use-before-define": 0,
       "react/prop-types": "off",
       "react/jsx-filename-extension": [
-        "warn",
+        "error",
         {
           "extensions": [
             ".js",
@@ -56,21 +93,14 @@
           "ignoreStyleProperties": false
         }
       ],
-      "global-require": "off",
-      "no-console": [
-        "error",
-        {
-          "allow": [
-            "tron"
-          ]
-        }
-      ]
+      "react/no-unstable-nested-components": "off",
+      "global-require": "off"
     },
     "globals": {
-      "__DEV__": "readonly",
-      "describe": "readonly",
-      "expect": "readonly",
-      "it": "readonly",
-      "jest": "readonly"
+    "__DEV__": "readonly",
+    "describe": "readonly",
+    "expect": "readonly",
+    "it": "readonly",
+    "jest": "readonly"
     }
-  }
+}
