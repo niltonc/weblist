@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  BackHandler,
   Text,
   View,
   TextInput,
@@ -19,6 +20,9 @@ import { Checkbox } from 'galio-framework';
 import styles from './styles';
 
 export default function Home({ navigation }) {
+  const [input, setInput] = useState();
+  const [allItems, setAllItems] = useState([0]);
+
   const storeData = async (value) => {
     try {
       const jsonValue = JSON.stringify(value);
@@ -41,9 +45,6 @@ export default function Home({ navigation }) {
   useEffect(() => {
     getData();
   }, []);
-
-  const [input, setInput] = useState();
-  const [allItems, setAllItems] = useState([]);
 
   const addElement = () => {
     if (input !== '') {
@@ -81,6 +82,27 @@ export default function Home({ navigation }) {
   const editElement = (element) => {
     console.log('editar');
   };
+
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert('Atenção!', 'Você realmente deseja sair do app?', [
+        {
+          text: 'Cancelar',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        { text: 'Sim', onPress: () => BackHandler.exitApp() },
+      ]);
+      return true;
+    };
+
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      backAction
+    );
+
+    return () => backHandler.remove();
+  }, []);
 
   function Item({ item }) {
     const [isSelected, setIsSelected] = useState(false);
@@ -157,16 +179,22 @@ export default function Home({ navigation }) {
         </View>
 
         <View style={styles.flatlistContainer}>
-          <ScrollView>
-            <FlatList
-              data={allItems}
-              renderItem={renderItem}
-              keyExtractor={(item) => item.timestamp}
-            />
-          </ScrollView>
+          {allItems.length != 0 ? (
+            <ScrollView>
+              <FlatList
+                data={allItems}
+                renderItem={renderItem}
+                keyExtractor={(item) => item.timestamp}
+              />
+            </ScrollView>
+          ) : (
+            <View style={{ position: 'absolute', top: '50%' }}>
+              <Text style={styles.textNenhumItem}>Nenhum item na lista...</Text>
+            </View>
+          )}
         </View>
 
-        <KeyboardAvoidingView style={{ flex: 1 }} behavior="height">
+        <KeyboardAvoidingView style={{ flex: 1 }}>
           <View style={styles.insertItemContainer}>
             <View style={styles.textInputContainer}>
               <TextInput

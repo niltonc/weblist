@@ -97,6 +97,12 @@ const styles = StyleSheet.create({
     margin: 8,
     width: 190,
   },
+  textNenhumItem: {
+    color: '#e85128',
+    fontSize: 20,
+    fontStyle: 'italic',
+    fontWeight: 'bold',
+  },
 });
 
 export default styles;
