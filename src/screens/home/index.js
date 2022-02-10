@@ -21,7 +21,6 @@ export default function Home({ navigation }) {
   const [input, setInput] = useState();
   const [allItems, setAllItems] = useState([]);
   const [allSelects, setAllSelects] = useState([]);
-  const [isSelected, setIsSelected] = useState(false);
 
   const addElement = () => {
     const timestamp = new Date().getDate();
@@ -36,11 +35,13 @@ export default function Home({ navigation }) {
     setAllSelects([]);
   };
 
-  const editElement = () => {
+  const editElement = (element) => {
     console.log('editar');
   };
 
   function Item({ item }) {
+    const [isSelected, setIsSelected] = useState(false);
+
     return (
       <View style={styles.itemFlatlist}>
         <Checkbox
@@ -54,14 +55,16 @@ export default function Home({ navigation }) {
           style={[
             styles.textItem,
             {
-              // textDecorationLine: isSelected ? 'line-through' : 'none',
+              opacity: isSelected ? 0.5 : 1.0,
+              textDecorationLine: isSelected ? 'line-through' : 'none',
+              color: isSelected ? '#7A7AF6' : '#e85128',
             },
           ]}>
           {item?.title}
         </Text>
 
         <TouchableOpacity
-          onPressOut={() => editElement()}
+          onPressOut={(item) => editElement(item)}
           style={{ margin: 5 }}>
           <Feather name="edit" size={20} color="blue" />
         </TouchableOpacity>
@@ -107,7 +110,7 @@ export default function Home({ navigation }) {
 
           <View style={styles.itemCounter}>
             <Text style={styles.textTitle}>
-              {allSelects.length}/{allItems.length}
+              {Item.length}/{allItems.length}
             </Text>
           </View>
         </View>
