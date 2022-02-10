@@ -109,6 +109,7 @@ export default function Home({ navigation }) {
     return (
       <View style={styles.itemFlatlist}>
         <Checkbox
+          checkboxStyle={{ margin: 8 }}
           label=""
           color="blue"
           value={isSelected}
@@ -130,7 +131,7 @@ export default function Home({ navigation }) {
 
         <TouchableOpacity
           onPressOut={(item) => editElement(item)}
-          style={{ margin: 5 }}>
+          style={{ margin: 8 }}>
           <Feather name="edit" size={20} color="blue" />
         </TouchableOpacity>
 
@@ -154,7 +155,7 @@ export default function Home({ navigation }) {
               { cancelable: false }
             )
           }
-          style={{ margin: 5 }}>
+          style={{ margin: 8 }}>
           <Feather name="trash" size={20} color="red" />
         </TouchableOpacity>
       </View>
@@ -180,7 +181,7 @@ export default function Home({ navigation }) {
 
         <View style={styles.flatlistContainer}>
           {allItems.length != 0 ? (
-            <ScrollView>
+            <ScrollView horizontal>
               <FlatList
                 data={allItems}
                 renderItem={renderItem}

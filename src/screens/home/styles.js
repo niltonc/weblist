@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
     elevation: 0.9,
     flexDirection: 'row',
     height: 45,
-    justifyContent: 'center',
+    justifyContent: 'space-around',
     marginBottom: 8,
     width: '100%',
   },
