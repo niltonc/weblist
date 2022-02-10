@@ -17,10 +17,16 @@
 ### Requisitos Opcionais
 
 - [x] Splash screen
-- [ ] Persistir os itens da lista para que o usuário possa fechar o app sem perder os dados
+- [x] Persistir os itens da lista para que o usuário possa fechar o app sem perder os dados
 - [ ] Confirmar com o usuário se deseja realmente fechar o app
 - [ ] Permitir edição do nome do item da lista
 - [ ] Executar um som ao selecionar/remover seleção de um item da lista
+
+### Adicionais 
+
+- [x] Logo
+- [x] Routes para futuras implementações
+- [x] Confirmação de espaço em branco no TextInput
 
 
 ## 🚀 Instalando WebList
@@ -37,9 +43,9 @@ Windows:
 npm install
 ```
 
-## 📫 Contribuindo para <nome_do_projeto>
+## 📫 Contribuindo para WebList
 <!---Se o seu README for longo ou se você tiver algum processo ou etapas específicas que deseja que os contribuidores sigam, considere a criação de um arquivo CONTRIBUTING.md separado--->
-Para contribuir com <nome_do_projeto>, siga estas etapas:
+Para contribuir com WebList, siga estas etapas:
 
 1. Bifurque este repositório.
 2. Crie um branch: `git checkout -b <nome_branch>`.
@@ -49,5 +55,3 @@ Para contribuir com <nome_do_projeto>, siga estas etapas:
 
 Como alternativa, consulte a documentação do GitHub em [como criar uma solicitação pull](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request).
 
-
-[⬆ Voltar ao topo](WebList)<br>
