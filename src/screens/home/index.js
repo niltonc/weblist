@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Text,
   View,
@@ -13,26 +13,69 @@ import {
 } from 'react-native';
 
 import { Feather } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Checkbox } from 'galio-framework';
 
 import styles from './styles';
 
 export default function Home({ navigation }) {
-  const [input, setInput] = useState();
-  const [allItems, setAllItems] = useState([]);
-  const [allSelects, setAllSelects] = useState([]);
-
-  const addElement = () => {
-    const timestamp = new Date().getDate();
-    const newArray = [...allItems, { id: timestamp, title: input }];
-    allItems.push({ id: timestamp, title: input });
-    setAllItems(newArray);
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+    } catch (e) {
+      // saving error
+    }
   };
 
-  const deleteElement = (element) => {
-    const newArray = allItems.filter((item) => item != element);
-    setAllItems(newArray);
-    setAllSelects([]);
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      const currentData = JSON.parse(jsonValue);
+      setAllItems(currentData);
+    } catch (e) {
+      // getting error
+    }
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const [input, setInput] = useState();
+  const [allItems, setAllItems] = useState([]);
+
+  const addElement = () => {
+    if (input !== '') {
+      const timestamp = new Date().getDate();
+      const arrayStructure = [...(allItems || [])];
+      const newArray = [...arrayStructure, { id: timestamp, title: input }];
+      storeData(newArray).then(() => {
+        getData();
+      });
+    } else {
+      return Alert.alert(
+        'Atenção',
+        'Você não pode adicionar um item sem um nome.',
+        [
+          {
+            text: 'OK',
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  };
+
+  const deleteElement = async (element) => {
+    try {
+      const newArray = allItems.filter((item) => item != element);
+      storeData(newArray).then(() => {
+        getData();
+      });
+    } catch (e) {
+      // deleting error
+    }
   };
 
   const editElement = (element) => {
@@ -41,10 +84,10 @@ export default function Home({ navigation }) {
 
   function Item({ item }) {
     const [isSelected, setIsSelected] = useState(false);
-
     return (
       <View style={styles.itemFlatlist}>
         <Checkbox
+          label=""
           color="blue"
           value={isSelected}
           onChange={(value) => {
@@ -109,7 +152,7 @@ export default function Home({ navigation }) {
           </View>
 
           <View style={styles.itemCounter}>
-            <Text style={styles.textTitle}>{allItems.length}</Text>
+            <Text style={styles.textTitle}>{allItems?.length || 0}</Text>
           </View>
         </View>
 
