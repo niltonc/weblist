@@ -10,10 +10,13 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@react-native-community/checkbox": "^0.5.9",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/stack": "^6.1.1",
+    "eslint": "^8.8.0",
     "expo": "~44.0.0",
     "expo-status-bar": "~1.2.0",
+    "galio-framework": "^0.8.0",
     "native-base": "^3.3.5",
     "react": "17.0.1",
     "react-dom": "17.0.1",

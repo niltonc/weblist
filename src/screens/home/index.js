@@ -1,17 +1,16 @@
 import React, { useState } from 'react';
-import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList } from 'react-native';
+import { Text, View, TextInput, TouchableOpacity, ImageBackground, StyleSheet, ScrollView, FlatList, Dimensions, KeyboardAvoidingView,SafeAreaView } from 'react-native';
 import { MaterialCommunityIcons, Feather  } from '@expo/vector-icons';
+import { Checkbox } from 'galio-framework';
 
-
-  const selectItem = () => {
-      console.log('item selecionado')
-  }
 
 export default function Home({ navigation }) {
   
     const [input, setInput] = useState();
     const [allItems,setAllItems] = useState([]);
-
+    const [allSelects, setAllSelects] = useState([]);
+    const [isSelected, setIsSelected]  = useState(false);
+    
     /* ADICIONAR OS ELEMENTOS */
     const addElement = () => {
         const timestamp = new Date().getDate();
@@ -26,9 +25,49 @@ export default function Home({ navigation }) {
           return item != element;
         })
         setAllItems(newArray);
+        setAllSelects([]);
       }
 
+      /* EDITAR */
+      const editElement = () =>{
+          console.log('editar')
+      } 
+      
+      function Item ({ item }) {      
+
+        return (
+            <View style={styles.itemFlatlist}>
+    
+        <Checkbox color="blue" value={isSelected} onChange={(value)=> {
+            setIsSelected(value);
+        }} />
+
+                <Text style={[styles.textItem,
+                {
+                  //  opacity: isSelected ? 0.5 : 1.0,
+                    textDecorationLine: setIsSelected ? 'none' : 'line-through',
+                   // color: isSelected ? '#6969FF' : '#0000FF'
+                }
+                 ]}> 
+                {item?.title}
+                </Text>
+
+                <TouchableOpacity onPressOut={() => editElement()} style={{margin:5}}>
+                <Feather name="edit" size={20} color="blue" />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => deleteElement(item) } style={{margin:5}}>
+            <Feather name="trash" size={20} color="red" />
+            </TouchableOpacity>
+
+    </View>
+        )
+      };
+
+      const renderItem = ({ item }) => <Item item={item} title={item.title} />;
+
     return (
+       
         <View style={styles.container}>
          
             <ImageBackground source={require('../../../assets/background.png')}
@@ -41,7 +80,7 @@ export default function Home({ navigation }) {
                     </View>
                     
                     <View style={styles.itemCounter}>
-                            <Text style={styles.textTitle}>0/{allItems.length}</Text>
+                            <Text style={styles.textTitle}>{allSelects.length}/{allItems.length}</Text>
                     </View>
                 </View>
 
@@ -51,25 +90,7 @@ export default function Home({ navigation }) {
 
                 <FlatList
                 data={allItems}
-                renderItem={({item})=>( 
-             <View style={styles.list}>
-            <TouchableOpacity onPress={() => selectItem()}>
-            <Feather name="square" size={20} color="blue" />
-                    </TouchableOpacity>
-    
-                    <Text style={[styles.textItem ]}> 
-                    {item.title}
-                    </Text>
-    
-                    <TouchableOpacity onPressOut={() => editItem()} style={{margin:5}}>
-                    <Feather name="edit" size={20} color="blue" />
-                </TouchableOpacity>
-    
-                <TouchableOpacity onPressOut={() => deleteElement(item) } style={{margin:5}}>
-                <Feather name="trash" size={20} color="red" />
-                </TouchableOpacity>
-        </View>
-        )}
+                renderItem={renderItem}
         keyExtractor={item => item.timestamp}
       />
           
@@ -77,9 +98,9 @@ export default function Home({ navigation }) {
                 </View>
 
                 {/* ADICIONA O ITEM A LISTA  */}
-
+              
+               
                <View style={styles.insertItemContainer}>
-
                     {/* view text input */}
                     <View style={styles.textInputContainer}>
                         <TextInput placeholder="Novo item da lista..." 
@@ -97,9 +118,12 @@ export default function Home({ navigation }) {
                             name="plus" 
                             size={24} 
                             color="black" />
+                            <Text>ADD</Text>
                         </TouchableOpacity>
                     </View>
                 </View>
+            
+             
             </ImageBackground>
         </View>
     );
@@ -110,11 +134,10 @@ const styles = StyleSheet.create({
         flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: '#FEF5E7'
     },
     backgroundImg:{
-        alignItems: 'center',
         flex: 1,
-        height: '100%',
-        justifyContent: 'center',
-        width: '100%',
+        resizeMode: 'cover',
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height
     },
     titleContainer:{
         backgroundColor: 'transparent', 
@@ -142,56 +165,66 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent', 
         alignItems: 'center' 
     }, 
+
     flatlistContainer:{
         backgroundColor: 'transparent', 
         width: '100%', 
-        height: '60%', 
+        height: '65%', 
         alignItems: 'center',
         justifyContent:'space-between', 
-        margin:10
     },
-    list:{
-        flexDirection: 'row',
-     alignItems: 'center',
+
+    itemFlatlist:{
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent:'center',
     backgroundColor:'#FFFFFF',
     borderRadius:10,
     width: '100%',
     marginBottom: 8,
-    height: 45
+    height: 45,
+    elevation:0.8
     },
     
     insertItemContainer:{
-        flexDirection: 'row', 
-        backgroundColor: "#e85128", 
-        borderRadius: 10,
+        backgroundColor:'#e85128',
+        flexDirection:'row',
+        justifyContent:'center',
+        alignItems:'center',
+        margin: 10,
+        height:60,
+        borderRadius:10,
     },
     textInputContainer:{
+        backgroundColor:'#1224',
         justifyContent:'center', 
-        alignItems:'center'
+        alignItems:'center',
+        width: 200,
+        margin:5,        
     },
     textInput:{
         height: 40,
-        margin: 12,
         padding: 10,
         borderRadius: 10,
-        backgroundColor: '#fff',
-        width: 240
+        backgroundColor: '#FFFFFF',
+        width: 220,
     },
     buttonContainer:{
+        flexDirection:'row',
         backgroundColor: 'transparent', 
-        justifyContent: 'center', 
+        justifyContent: 'flex-end', 
         alignItems: 'center', 
-        width: 80
+        width: 90,
+        margin:5,
     },
     button:{
-        backgroundColor: "#fff", 
-        flexDirection: 'row', 
+        flexDirection:'row',
+        backgroundColor: "#FFFFFF", 
         height: 40, 
-        width: 60, 
+        width: 80, 
         alignItems: 'center', 
         justifyContent: 'center', 
-        borderRadius: 10,
+        borderRadius: 10, 
         elevation:6
     },
     textItem:{
@@ -200,6 +233,6 @@ const styles = StyleSheet.create({
         backgroundColor:'transparent',
         width: 190,
         justifyContent:'center',
-        margin: 8
+        margin: 8,
     },
 })
