@@ -12,13 +12,13 @@
 - [x] O app deve possuir um campo para cadastro de novos itens na lista
 - [x] O app deve contabilizar alterar os estilos do item da lista caso este item esteja selecionado
 - [x] O app deve permitir a exclusão de itens da lista, sendo que é necessário confirmar com o usuário se o item pode realmente ser excluído
-- [ ] O app deve apresentar a mensagem de “nenhum item na lista” caso nenhum item tenha sido adicionado.
+- [x] O app deve apresentar a mensagem de “nenhum item na lista” caso nenhum item tenha sido adicionado.
 
 ### Requisitos Opcionais
 
 - [x] Splash screen
 - [x] Persistir os itens da lista para que o usuário possa fechar o app sem perder os dados
-- [ ] Confirmar com o usuário se deseja realmente fechar o app
+- [x] Confirmar com o usuário se deseja realmente fechar o app
 - [ ] Permitir edição do nome do item da lista
 - [ ] Executar um som ao selecionar/remover seleção de um item da lista
 
